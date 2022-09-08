@@ -1,0 +1,11 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, rgba(253,246,206,1) 45%, rgba(255,214,236,1) 100%);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
