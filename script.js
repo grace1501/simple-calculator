@@ -16,12 +16,22 @@ class Calculator {
     }
 
     appendNumber(number) {
-        
-        this.currentOperand = number;
+        if(number === '.' && this.currentOperand.includes('.')) {
+            return;
+        }
+        else {
+            this.currentOperand = this.currentOperand.toString() + number.toString();
+        }
     }
 
     chooseOperation(operation) {
+        if(this.currentOperand === '.') {
+            return;
+        }
 
+        this.operation = operation;
+        this.previousOperand = this.currentOperand;
+        this.currentOperand = '';
     }
 
     compute() {
@@ -33,12 +43,19 @@ class Calculator {
     }
 
     updateDisplay() {
+        //display current operand
         this.currentOperandElement.innerText = this.currentOperand;
+        //display previous operand
+        if(this.operation != null) {
+            this.previousOperandElement.innerText = `${this.previousOperand} ${this.operation}`;
+        }
+        else {
+            this.previousOperandElement.innerText = '';
+        }
         
     }
 
 }
-
 
 
 //select all elements of calculator
@@ -59,7 +76,28 @@ numberBtn.forEach(button => {
     button.addEventListener('click', () => {
         calculator.appendNumber(button.innerText);
         calculator.updateDisplay();
-        console.log(button)
+        // console.log(button);
     })
 })
 
+acBtn.addEventListener('click', () => {
+    calculator.clear();
+    calculator.updateDisplay();
+})
+
+delBtn.addEventListener('click', () => {
+    calculator.delete();
+    calculator.updateDisplay();
+})
+
+operationBtn.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.chooseOperation(button.innerText);
+        calculator.updateDisplay();
+    })
+})
+
+equalsBtn.addEventListener('click', () => {
+    calculator.compute();
+    calculator.updateDisplay();
+})
