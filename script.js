@@ -25,8 +25,12 @@ class Calculator {
     }
 
     chooseOperation(operation) {
-        if(this.currentOperand === '.') {
+        if(this.currentOperand === '') {
             return;
+        }
+
+        if(this.previousOperand !== '') {
+            this.compute();
         }
 
         this.operation = operation;
@@ -35,9 +39,40 @@ class Calculator {
     }
 
     compute() {
+        let computeResult;
+        //convert values of both operand to float number type
+        const previousVal = parseFloat(this.previousOperand);
+        const currentVal = parseFloat(this.currentOperand);
 
+        //check if both value are valid numbers
+        if(Number.isNaN(previousVal) || Number.isNaN(currentVal)) {
+            return;
+        }
+
+        switch (this.operation) {
+            case '+':
+                computeResult = previousVal + currentVal;
+                break;
+            case '-':
+                computeResult = previousVal - currentVal;
+                break;
+            case '*':
+                computeResult = previousVal * currentVal;
+                break;
+            case '÷':
+                computeResult = previousVal / currentVal;
+                break;    
+            default:
+                return;
+        }
+
+        this.currentOperand = computeResult;
+        this.previousOperand = '';
+        this.operation = undefined;
     }
 
+
+    //optional: format display number with comma 123,456.05
     getDisplayNumber(number) {
 
     }
@@ -61,7 +96,7 @@ class Calculator {
 //select all elements of calculator
 const numberBtn = document.querySelectorAll(".number");
 const operationBtn = document.querySelectorAll('.operation');
-const equalsBtn = document.getElementById('equal');
+const equalsBtn = document.getElementById('equals');
 const delBtn = document.getElementById('delete');
 const acBtn = document.getElementById('all-clear');
 const previousOperandElement = document.getElementById('previous-operand');
@@ -100,4 +135,5 @@ operationBtn.forEach(button => {
 equalsBtn.addEventListener('click', () => {
     calculator.compute();
     calculator.updateDisplay();
+    console.log(calculator.currentOperand)
 })
