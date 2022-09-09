@@ -73,16 +73,37 @@ class Calculator {
 
 
     //optional: format display number with comma 123,456.05
-    getDisplayNumber(number) {
-
+    formatDisplayNumber(number) {
+        let numberStr = number.toString();
+        let resultStr = '';
+        let beforeDecimal = '';
+        if(numberStr.includes('.')) {
+            resultStr += numberStr.substring(numberStr.indexOf('.'));
+            beforeDecimal = numberStr.substring(0,numberStr.indexOf('.'));
+        }
+        else {
+          beforeDecimal = numberStr;
+        }
+        console.log(beforeDecimal);
+        let count = 0;  
+        for (let i=beforeDecimal.length-1; i>=0; i--) {
+          if (count !==0 && count % 3 === 0) {
+            resultStr = ',' + resultStr;
+          }
+          resultStr = beforeDecimal[i] + resultStr;
+          count++;
+        }
+        
+        console.log(resultStr);
+        return resultStr;
     }
 
     updateDisplay() {
         //display current operand
-        this.currentOperandElement.innerText = this.currentOperand;
+        this.currentOperandElement.innerText = this.formatDisplayNumber(this.currentOperand);
         //display previous operand
         if(this.operation != null) {
-            this.previousOperandElement.innerText = `${this.previousOperand} ${this.operation}`;
+            this.previousOperandElement.innerText = `${this.formatDisplayNumber(this.previousOperand)} ${this.operation}`;
         }
         else {
             this.previousOperandElement.innerText = '';
